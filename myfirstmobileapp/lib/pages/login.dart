@@ -7,6 +7,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _obscurePassword = true;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _typedEmail = '';
+  String _typedPassword = '';
+
+  void _login() {
+    print('Login button pressed');
+    print('Email typed: ${_emailController.text}');
+    print('Password typed: ${_passwordController.text}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +31,29 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Text("First Line"),
-            const Text("Second Line"),
+            TextFormField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            TextFormField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: _obscurePassword,
+            ),
+            Row(
+              children: [
+                Checkbox(
+                  value: _obscurePassword,
+                  onChanged: (value) {
+                    setState(() {
+                      _obscurePassword = value!;
+                    });
+                  },
+                ),
+                const Text('Obscure Password'),
+              ],
+            ),
+            ElevatedButton(onPressed: _login, child: const Text('Login')),
           ],
         ),
       ),
