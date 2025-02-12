@@ -15,9 +15,18 @@ class _LoginPageState extends State<LoginPage> {
   String _typedPassword = '';
 
   void _login() {
-    print('Login button pressed');
-    print('Email typed: ${_emailController.text}');
-    print('Password typed: ${_passwordController.text}');
+    _typedEmail = _emailController.text;
+    _typedPassword = _passwordController.text;
+    if (_typedEmail == 'admin' && _typedPassword == 'admin') {
+      Navigator.of(context).pushReplacementNamed('/homepage');
+    } else {
+      SnackBar snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: const Text('Invalid email or password'),
+        duration: const Duration(seconds: 3),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override
