@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -20,6 +22,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String _username = '';
+  String _fullname = '';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null) {
+      DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      DocumentSnapshot userSnapshot = await userDoc.get();
+      setState(() {
+        _username = userSnapshot.get('username');
+        _fullname = userSnapshot.get('fullname');
+        _counter = userSnapshot.get('counter') as int;
+      });
+    }
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -30,6 +53,15 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null) {
+      DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      userDoc.update(
+        {
+          'counter': _counter,
+        }
+      );
+    }
   }
 
   @override
@@ -69,6 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(_username),
+            Text(_fullname),
             const Text(
               'You have pushed the button this many times:',
             ),
