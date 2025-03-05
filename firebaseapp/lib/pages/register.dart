@@ -31,6 +31,16 @@ class _RegisterPageState extends State<RegisterPage> {
         email: _typedEmail,
         password: _typedPassword,
       );
+      User? user = credential.user;
+      if(user != null) {
+        DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+        userDoc.set(
+          {
+            'username': _typedUsername,
+            'fullname': _typedFullname,
+          }
+        );
+      }
 
       if(mounted) {
         Navigator.of(context)
