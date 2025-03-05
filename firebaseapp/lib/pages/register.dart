@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseapp/components/my_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,26 @@ class _RegisterPageState extends State<RegisterPage> {
     _typedPassword = _passwordController.text;
     _typedUsername = _usernameController.text;
     _typedFullname = _fullnameController.text;
-    
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _typedEmail,
+        password: _typedPassword,
+      );
+
+      if(mounted) {
+        Navigator.of(context)
+          .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+      }
+    } on FirebaseAuthException catch (_) {
+      SnackBar snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: const Text('Unable to register'),
+        duration: const Duration(seconds: 3),
+      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
   }
 
   @override
