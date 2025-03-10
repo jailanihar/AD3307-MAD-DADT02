@@ -77,6 +77,11 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: const Text('Register')
             ),
+            TextButton(onPressed: () {
+                Navigator.of(context).pushNamed('/forgotpassword');
+              },
+              child: const Text('Forgot Password?')
+            ),
           ],
         ),
       ),
