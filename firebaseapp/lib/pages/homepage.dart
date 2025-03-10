@@ -64,6 +64,24 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> _logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      if(mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+      }
+    } on FirebaseAuthException catch (_) {
+      SnackBar snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: const Text('Unable to logout'),
+        duration: const Duration(seconds: 3),
+      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -110,13 +128,14 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ElevatedButton(onPressed: _incrementCounter, child: const Text('Increment Counter')),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: _logout,
+        tooltip: 'Logout',
+        child: const Icon(Icons.logout),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
