@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 
 class GalleryPage extends StatefulWidget {
   const GalleryPage({super.key});
@@ -25,6 +26,20 @@ class _GalleryPageState extends State<GalleryPage> {
     storage = Storage(client);
   }
 
+  Future<void> pickImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if(result != null) {
+      setState(() {
+        _imageBytes = result.files.first.bytes;
+        _imagePath = result.files.first.path;
+      });
+    }
+  }
+
+  Future<void> uploadImage() async {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +56,8 @@ class _GalleryPageState extends State<GalleryPage> {
             (_imagePath != null ? 
               Image.file(File(_imagePath!), fit: BoxFit.cover, width: 200, height: 200)
               : Text('No image selected')),
+          ElevatedButton(onPressed: pickImage, child: Text('Pick Image')),
+          ElevatedButton(onPressed: uploadImage, child: Text('Upload Image')),
         ],
       ),
     );

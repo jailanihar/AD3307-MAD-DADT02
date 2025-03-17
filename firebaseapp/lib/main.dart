@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebaseapp/firebase_options.dart';
 import 'package:firebaseapp/pages/forgot_password.dart';
+import 'package:firebaseapp/pages/gallery.dart';
 import 'package:firebaseapp/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'pages/homepage.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/forgotpassword': (context) => ForgotPasswordPage(),
+        '/gallery': (context) => GalleryPage(),
       },
     );
   }

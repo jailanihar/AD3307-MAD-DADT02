@@ -129,6 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             ElevatedButton(onPressed: _incrementCounter, child: const Text('Increment Counter')),
+            ElevatedButton(onPressed: () {
+              Navigator.of(context).pushNamed('/gallery');
+            }, child: const Text('Go to Gallery')),
           ],
         ),
       ),
