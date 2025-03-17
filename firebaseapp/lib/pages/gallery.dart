@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
@@ -21,7 +22,7 @@ class _GalleryPageState extends State<GalleryPage> {
   void initState() {
     super.initState();
     client = Client()
-      .setEndpoint('http://cloud.appwrite.io/v1')
+      .setEndpoint('https://cloud.appwrite.io/v1')
       .setProject('67d76af60020ab7cd9b7'); // Your project ID
     storage = Storage(client);
   }
@@ -37,7 +38,36 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   Future<void> uploadImage() async {
+    if(kIsWeb) {
+      if(_imageBytes == null) return;
+    } else {
+      if(_imagePath == null) return;
+    }
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null) {
+      String fileName = '${user.uid}_${DateTime.now().millisecondsSinceEpoch}.png';
+      final result;
+      if(kIsWeb) {
+        result = await storage.createFile(
+          bucketId: '67d76b7600283842c636', // Appwrite bucket id
+          fileId: ID.unique(),
+          file: InputFile.fromBytes(bytes: _imageBytes!, filename: fileName),
+        );
+      } else {
+        result = await storage.createFile(
+          bucketId: '67d76b7600283842c636', // Appwrite bucket id
+          fileId: ID.unique(),
+          file: InputFile.fromPath(path: _imagePath!, filename: fileName),
+        );
+      }
 
+      if(result != null) {
+        setState(() {
+          _imageBytes = null;
+          _imagePath = null;
+        });
+      }
+    }
   }
 
   @override
