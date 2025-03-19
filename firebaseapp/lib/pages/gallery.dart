@@ -18,6 +18,7 @@ class _GalleryPageState extends State<GalleryPage> {
   late Storage storage;
   Uint8List? _imageBytes;
   String? _imagePath;
+  List<dynamic> _imageIds = [];
 
   @override
   void initState() {
@@ -26,6 +27,21 @@ class _GalleryPageState extends State<GalleryPage> {
       .setEndpoint('https://cloud.appwrite.io/v1')
       .setProject('67d76af60020ab7cd9b7'); // Your project ID
     storage = Storage(client);
+    _loadImages();
+  }
+
+  Future<void> _loadImages() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null) {
+      DocumentSnapshot<Map<String, dynamic>> userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if(userDoc.exists) {
+        setState(() {
+            _imageIds = userDoc.data()!['gallery'] ?? [];
+          }
+        );
+      }
+    }
   }
 
   Future<void> pickImage() async {
@@ -70,6 +86,7 @@ class _GalleryPageState extends State<GalleryPage> {
         });
 
         setState(() {
+          _imageIds.add(result.$id);
           _imageBytes = null;
           _imagePath = null;
         });
@@ -95,6 +112,33 @@ class _GalleryPageState extends State<GalleryPage> {
               : Text('No image selected')),
           ElevatedButton(onPressed: pickImage, child: Text('Pick Image')),
           ElevatedButton(onPressed: uploadImage, child: Text('Upload Image')),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 4.0,
+                mainAxisSpacing: 4.0,
+              ),
+              itemCount: _imageIds.length,
+              itemBuilder: (context, index) => FutureBuilder(
+                future: storage.getFileDownload(
+                  bucketId: '67d76b7600283842c636',
+                  fileId: _imageIds[index] as String,
+                ),
+                builder: (context, snapshot) {
+                  return snapshot.hasData && snapshot.data != null ?
+                    Image.memory(
+                      snapshot.data as Uint8List,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    )
+                  :
+                    CircularProgressIndicator();
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );
