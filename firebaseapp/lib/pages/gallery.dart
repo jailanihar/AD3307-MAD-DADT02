@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
@@ -62,6 +63,12 @@ class _GalleryPageState extends State<GalleryPage> {
       }
 
       if(result != null) {
+        DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+        userDoc.update({
+          'gallery': FieldValue.arrayUnion([result.$id])
+        });
+
         setState(() {
           _imageBytes = null;
           _imagePath = null;
