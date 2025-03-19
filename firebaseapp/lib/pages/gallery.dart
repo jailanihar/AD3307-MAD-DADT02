@@ -94,6 +94,25 @@ class _GalleryPageState extends State<GalleryPage> {
     }
   }
 
+  Future<void> deleteImage(String imageId) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null) {
+      await storage.deleteFile(
+        bucketId: '67d76b7600283842c636',
+        fileId: imageId,
+      );
+
+      DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      userDoc.update({
+        'gallery': FieldValue.arrayRemove([imageId]),
+      });
+
+      setState(() {
+        _imageIds.remove(imageId);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,11 +146,23 @@ class _GalleryPageState extends State<GalleryPage> {
                 ),
                 builder: (context, snapshot) {
                   return snapshot.hasData && snapshot.data != null ?
-                    Image.memory(
-                      snapshot.data as Uint8List,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
+                    Stack(
+                      children: [
+                        Image.memory(
+                          snapshot.data as Uint8List,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => deleteImage(_imageIds[index] as String),
+                          ),
+                        ),
+                      ]
                     )
                   :
                     CircularProgressIndicator();
