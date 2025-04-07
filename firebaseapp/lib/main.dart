@@ -7,6 +7,7 @@ import 'package:firebaseapp/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'pages/homepage.dart';
 import 'pages/login.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +53,9 @@ class MyApp extends StatelessWidget {
         '/forgotpassword': (context) => ForgotPasswordPage(),
         '/gallery': (context) => GalleryPage(),
       },
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('en'),
     );
   }
 }
