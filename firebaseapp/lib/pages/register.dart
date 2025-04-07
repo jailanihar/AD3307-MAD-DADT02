@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseapp/components/my_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -62,7 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register Page'),
+        title: Text(AppLocalizations.of(context)!.registerPage),
         backgroundColor: Color.fromRGBO(147, 124, 206, 1.0),
         centerTitle: true,
       ),
@@ -70,16 +71,16 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            MyTextFormField(labelText: 'Email', controller: _emailController),
+            MyTextFormField(labelText: AppLocalizations.of(context)!.email, controller: _emailController),
             MyTextFormField(
-                labelText: 'Password',
+                labelText: AppLocalizations.of(context)!.password,
                 controller: _passwordController,
                 obscureText: _obscurePassword),
             MyTextFormField(
-                labelText: 'Username',
+                labelText: AppLocalizations.of(context)!.username,
                 controller: _usernameController),
             MyTextFormField(
-                labelText: 'Full Name',
+                labelText: AppLocalizations.of(context)!.fullName,
                 controller: _fullnameController),
             Row(
               children: [
@@ -89,11 +90,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       _obscurePassword = !_obscurePassword;
                     });
                   },
-                  child: Text(_obscurePassword ? 'Show Password' : 'Hide Password'),
+                  child: Text(_obscurePassword ? AppLocalizations.of(context)!.showPassword : AppLocalizations.of(context)!.hidePassword),
                 ),
                 ElevatedButton(
                   onPressed: _register,
-                  child: const Text('Register'),
+                  child: Text(AppLocalizations.of(context)!.register),
                 ),
               ],
             ),
