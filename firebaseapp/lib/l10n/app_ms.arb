@@ -2,5 +2,14 @@
     "loginPage": "Halaman Log Masuk",
     "email": "E-mel",
     "password": "Kata Laluan",
-    "login": "Log Masuk"
+    "login": "Log Masuk",
+    "hidePassword": "Sembunyikan Kata Laluan",
+    "register": "Daftar",
+    "forgotPassword": "Lupa Kata Laluan?",
+    "registerPage": "Halaman Pendaftaran",
+    "username": "Nama Pengguna",
+    "fullName": "Nama Penuh",
+    "showPassword": "Tunjukkan Kata Laluan",
+    "forgotPasswordPage": "Halaman Lupa Kata Laluan",
+    "sendEmail": "Hantar E-mel"
 }

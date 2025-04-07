@@ -2,5 +2,14 @@
     "loginPage": "صفحة تسجيل الدخول",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
-    "login": "تسجيل الدخول"
+    "login": "تسجيل الدخول",
+    "hidePassword": "إخفاء كلمة المرور",
+    "register": "إنشاء حساب",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "registerPage": "صفحة التسجيل",
+    "username": "اسم المستخدم",
+    "fullName": "الاسم الكامل",
+    "showPassword": "إظهار كلمة المرور",
+    "forgotPasswordPage": "صفحة استعادة كلمة المرور",
+    "sendEmail": "إرسال البريد الإلكتروني"
 }

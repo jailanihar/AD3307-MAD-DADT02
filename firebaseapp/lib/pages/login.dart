@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                     });
                   },
                 ),
-                const Text('Obscure Password'),
+                Text(AppLocalizations.of(context)!.hidePassword),
               ],
             ),
             ElevatedButton(onPressed: _login, child: Text(AppLocalizations.of(context)!.login)),
@@ -76,12 +76,12 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 Navigator.of(context).pushNamed('/register');
               },
-              child: const Text('Register')
+              child: Text(AppLocalizations.of(context)!.register),
             ),
             TextButton(onPressed: () {
                 Navigator.of(context).pushNamed('/forgotpassword');
               },
-              child: const Text('Forgot Password?')
+              child: Text(AppLocalizations.of(context)!.forgotPassword)
             ),
           ],
         ),

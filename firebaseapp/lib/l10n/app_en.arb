@@ -2,5 +2,14 @@
     "loginPage": "Login Page",
     "email": "Email",
     "password": "Password",
-    "login": "Login"
+    "login": "Login",
+    "hidePassword": "Hide Password",
+    "register": "Register",
+    "forgotPassword": "Forgot Password?",
+    "registerPage": "Register Page",
+    "username": "Username",
+    "fullName": "Full Name",
+    "showPassword": "Show Password",
+    "forgotPasswordPage": "Forgot Password Page",
+    "sendEmail": "Send Email"
 }
