@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebaseapp/provider/locale_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebaseapp/components/my_text_form_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -43,11 +45,28 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LocaleProvider>(context);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.loginPage),
         backgroundColor: Color.fromRGBO(147, 124, 206, 1.0),
         centerTitle: true,
+        actions: [
+          DropdownButton<Locale>(
+            items: AppLocalizations.supportedLocales.map(
+              (locale) => DropdownMenuItem<Locale> (
+                value: locale,
+                child: Text(locale.languageCode),
+              ),
+            ).toList(),
+            onChanged: (Locale? locale) {
+              if(locale != null) {
+                provider.setLocale(locale);
+              }
+            }
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
