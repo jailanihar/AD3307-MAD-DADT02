@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebaseapp/components/my_text_form_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login Page'),
+        title: Text(AppLocalizations.of(context)!.loginPage),
         backgroundColor: Color.fromRGBO(147, 124, 206, 1.0),
         centerTitle: true,
       ),
@@ -52,9 +53,9 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            MyTextFormField(labelText: 'Email', controller: _emailController),
+            MyTextFormField(labelText: AppLocalizations.of(context)!.email, controller: _emailController),
             MyTextFormField(
-                labelText: 'Password',
+                labelText: AppLocalizations.of(context)!.password,
                 controller: _passwordController,
                 obscureText: _obscurePassword),
             Row(
@@ -70,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Text('Obscure Password'),
               ],
             ),
-            ElevatedButton(onPressed: _login, child: const Text('Login')),
+            ElevatedButton(onPressed: _login, child: Text(AppLocalizations.of(context)!.login)),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamed('/register');

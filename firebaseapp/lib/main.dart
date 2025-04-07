@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      locale: const Locale('en'),
+      locale: const Locale('ar'),
     );
   }
 }
