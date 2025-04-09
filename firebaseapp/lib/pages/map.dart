@@ -52,44 +52,81 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+  void _clearSelectedLocation() {
+    setState(() {
+      _selectedLocation = null;
+    });
+  }
+
+  void _getSelectedLocation() {
+    if(_selectedLocation != null) {
+      _mapController.move(_selectedLocation!, _mapController.camera.zoom);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Map Page'),
       ),
-      body: FlutterMap(
-        mapController: _mapController,
-        options: MapOptions(
-          initialCenter: _currentLocation,
-          initialZoom: 19.0,
-          onTap: (tapPosition, point) => _onMapTapped(point),
-        ),
+      body: Stack(
         children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            tileProvider: CancellableNetworkTileProvider(),
-          ),
-          MarkerLayer(
-            markers: [
-              Marker(
-                point: _currentLocation,
-                child: Icon(
-                  Icons.my_location,
-                  color: Colors.blue,
-                  size: 30,
-                ),
+          FlutterMap(
+            mapController: _mapController,
+            options: MapOptions(
+              initialCenter: _currentLocation,
+              initialZoom: 19.0,
+              onTap: (tapPosition, point) => _onMapTapped(point),
+            ),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                tileProvider: CancellableNetworkTileProvider(),
               ),
-              if(_selectedLocation != null)
-                Marker(
-                  point: _selectedLocation!,
-                  child: Icon(
-                    Icons.pin_drop,
-                    color: Colors.red,
-                    size: 30,
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    point: _currentLocation,
+                    child: Icon(
+                      Icons.my_location,
+                      color: Colors.blue,
+                      size: 30,
+                    ),
                   ),
-                ),
+                  if(_selectedLocation != null)
+                    Marker(
+                      point: _selectedLocation!,
+                      child: Icon(
+                        Icons.pin_drop,
+                        color: Colors.red,
+                        size: 30,
+                      ),
+                    ),
+                ],
+              ),
             ],
+          ),
+          Positioned(
+            top: 20,
+            left: 20,
+            right: 20,
+            child: Row(
+              children: [
+                ElevatedButton(
+                  onPressed: _clearSelectedLocation,
+                  child: const Text('Clear Selected Location'),
+                ),
+                ElevatedButton(
+                  onPressed: _getCurrentLocation,
+                  child: const Text('Current Location'),
+                ),
+                ElevatedButton(
+                  onPressed: _getSelectedLocation,
+                  child: const Text('Selected Location'),
+                ),
+              ],
+            ),
           ),
         ],
       ),
