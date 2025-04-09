@@ -18,6 +18,7 @@ class _MapPageState extends State<MapPage> {
     distanceFilter: 10,
   );
   LatLng _currentLocation = LatLng(4.89, 114.942);
+  LatLng? _selectedLocation;
 
   @override
   void initState() {
@@ -45,6 +46,12 @@ class _MapPageState extends State<MapPage> {
     _mapController.move(_currentLocation, _mapController.camera.zoom);
   }
 
+  void _onMapTapped(LatLng point) {
+    setState(() {
+      _selectedLocation = point;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +63,7 @@ class _MapPageState extends State<MapPage> {
         options: MapOptions(
           initialCenter: _currentLocation,
           initialZoom: 19.0,
+          onTap: (tapPosition, point) => _onMapTapped(point),
         ),
         children: [
           TileLayer(
@@ -72,6 +80,15 @@ class _MapPageState extends State<MapPage> {
                   size: 30,
                 ),
               ),
+              if(_selectedLocation != null)
+                Marker(
+                  point: _selectedLocation!,
+                  child: Icon(
+                    Icons.pin_drop,
+                    color: Colors.red,
+                    size: 30,
+                  ),
+                ),
             ],
           ),
         ],
