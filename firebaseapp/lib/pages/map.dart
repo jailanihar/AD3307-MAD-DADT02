@@ -12,6 +12,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  final MapController _mapController = MapController();
   final LocationSettings locationSettings = LocationSettings(
     accuracy: LocationAccuracy.high,
     distanceFilter: 10,
@@ -41,6 +42,7 @@ class _MapPageState extends State<MapPage> {
     setState(() {
       _currentLocation = LatLng(position.latitude, position.longitude);
     });
+    _mapController.move(_currentLocation, _mapController.camera.zoom);
   }
 
   @override
@@ -50,6 +52,7 @@ class _MapPageState extends State<MapPage> {
         title: Text('Map Page'),
       ),
       body: FlutterMap(
+        mapController: _mapController,
         options: MapOptions(
           initialCenter: _currentLocation,
           initialZoom: 19.0,
