@@ -21,11 +21,13 @@ class _MapPageState extends State<MapPage> {
   );
   LatLng _currentLocation = LatLng(4.89, 114.942);
   LatLng? _selectedLocation;
+  LatLng? _savedLocation;
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
+    _loadSavedLocation();
   }
 
   Future<void> _getCurrentLocation() async {
@@ -74,13 +76,35 @@ class _MapPageState extends State<MapPage> {
         DocumentReference userDoc =
           FirebaseFirestore.instance.collection('users')
           .doc(user.uid);
-          userDoc.update({
-            'latitude': savingLocation.latitude,
-            'longitude': savingLocation.longitude,
-          });
+        userDoc.update({
+          'latitude': savingLocation.latitude,
+          'longitude': savingLocation.longitude,
+        });
+        setState(() {
+          _savedLocation = savingLocation;
+          _selectedLocation = null;
+        });
       }
     } catch (e) {
 
+    }
+  }
+
+  Future<void> _loadSavedLocation() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null) {
+      DocumentReference userDoc =
+        FirebaseFirestore.instance.collection('users')
+        .doc(user.uid);
+      DocumentSnapshot userSnapshot = await userDoc.get();
+      if(userSnapshot.exists) {
+        setState(() {
+          _savedLocation = LatLng(
+            userSnapshot.get('latitude') as double,
+            userSnapshot.get('longitude') as double,
+          );
+        });
+      }
     }
   }
 
@@ -120,6 +144,15 @@ class _MapPageState extends State<MapPage> {
                       child: Icon(
                         Icons.pin_drop,
                         color: Colors.red,
+                        size: 30,
+                      ),
+                    ),
+                  if(_savedLocation != null)
+                    Marker(
+                      point: _savedLocation!,
+                      child: Icon(
+                        Icons.location_on,
+                        color: Colors.green,
                         size: 30,
                       ),
                     ),
