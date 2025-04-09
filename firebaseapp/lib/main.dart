@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebaseapp/firebase_options.dart';
 import 'package:firebaseapp/pages/forgot_password.dart';
 import 'package:firebaseapp/pages/gallery.dart';
+import 'package:firebaseapp/pages/map.dart';
 import 'package:firebaseapp/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'pages/homepage.dart';
@@ -54,7 +55,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: FirebaseAuth.instance.currentUser != null ? '/homepage' : '/login',
+      // initialRoute: FirebaseAuth.instance.currentUser != null ? '/homepage' : '/login',
+      initialRoute: '/map',
       routes: {
         '/homepage': (context) =>
             const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -62,6 +64,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterPage(),
         '/forgotpassword': (context) => ForgotPasswordPage(),
         '/gallery': (context) => GalleryPage(),
+        '/map': (context) => MapPage(),
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
