@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
@@ -64,6 +66,24 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  Future<void> _saveLocationToFirebase() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if(user != null) {
+        LatLng savingLocation = _selectedLocation ?? _currentLocation;
+        DocumentReference userDoc =
+          FirebaseFirestore.instance.collection('users')
+          .doc(user.uid);
+          userDoc.update({
+            'latitude': savingLocation.latitude,
+            'longitude': savingLocation.longitude,
+          });
+      }
+    } catch (e) {
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,6 +146,15 @@ class _MapPageState extends State<MapPage> {
                   child: const Text('Selected Location'),
                 ),
               ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 20,
+            right: 20,
+            child: ElevatedButton(
+              onPressed: _saveLocationToFirebase,
+              child: const Text('Save Location'),
             ),
           ),
         ],

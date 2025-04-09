@@ -132,6 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(onPressed: () {
               Navigator.of(context).pushNamed('/gallery');
             }, child: const Text('Go to Gallery')),
+            ElevatedButton(onPressed: () {
+              Navigator.of(context).pushNamed('/map');
+            }, child: const Text('Go to Map')),
           ],
         ),
       ),
